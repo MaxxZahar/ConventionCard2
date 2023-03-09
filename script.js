@@ -1,4 +1,13 @@
 const bidList = document.querySelector('.bid_list');
+const once = { once: true };
+
+function createGlobalEventListener(type, selector, callback) {
+    document.addEventListener(type, e => {
+        if (e.target.matches(selector)) {
+            callback(e);
+        }
+    });
+}
 
 function createSuitSymbol(value) {
     let s = 'NT'
@@ -27,9 +36,14 @@ function createList(rootId) {
             bidLi.dataset.value = createSuitSymbol(bid.value);
             bidLi.textContent = bid.text;
             bidLi.dataset.comment = bid.comment;
+            bidLi.addEventListener('click', clickOnBid, { once: true });
             bidList.appendChild(bidLi);
         }
     })
+}
+
+function clickOnBid(event) {
+    event.currentTarget.classList.add('fixed');
 }
 
 createList(0);
